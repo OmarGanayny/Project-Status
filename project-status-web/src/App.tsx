@@ -356,7 +356,7 @@ export default function App() {
               <span className="eyebrow dark">KNOWLEDGE BASE</span>
               <h2>Answers when you need them</h2>
             </div>
-            <a href="https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Reporting.aspx#aconex-faq-section" target="_blank" rel="noreferrer">
+            <a href="https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Lists/Aconex%20Frequently%20Asked%20Questions%20FAQ/AllItems.aspx?e=bxUO9M&CID=024c8c8e%2D9ab6%2D4567%2D8c3d%2Db0baf3034f8a" target="_blank" rel="noreferrer">
               <Icon name="help" />
               <span>
                 <strong>Aconex FAQ</strong>
@@ -364,7 +364,7 @@ export default function App() {
               </span>
               <Icon name="arrow" />
             </a>
-            <a href="https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Reporting.aspx#lms-faq-section" target="_blank" rel="noreferrer">
+            <a href="https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Lists/LMS%20Frequently%20Asked%20Questions%20FAQ/AllItems.aspx?e=OPUpPm&CID=0dae5f58%2D38d2%2D4022%2D8d26%2De1844b4bcd15" target="_blank" rel="noreferrer">
               <Icon name="help" />
               <span>
                 <strong>LMS FAQ</strong>
