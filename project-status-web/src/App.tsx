@@ -155,28 +155,35 @@ const contacts = [
   {
     initials: "AZ",
     name: "Reen Aguib",
+    email: "reen.aguib@siemens.com",
     role: "Reporting Engineer",
     scope: "PMO · REP Dashboards · MPR · Internal Status",
   },
   {
     initials: "FE",
     name: "Farah Eissa",
+    email: "farah.eissa@siemens.com",
     role: "Senior Information Manager",
     scope: "PMO · INF Dashboards",
   },
   {
     initials: "OS",
     name: "Mariam Elkhatib",
+    email: "mariam.elkhatib@siemens.com",
     role: "Information Engineer",
     scope: "SIT · Weekly P2 Site Report",
   },
   {
     initials: "AA",
     name: "Ahmed Abdullatif",
+    email: "ahmed.abdullatif@siemens.com",
     role: "SMO TK EG EHS",
     scope: "EHS · Dashboards",
   },
 ]
+
+const profilePhotoUrl = (email: string) =>
+  `https://siemens.sharepoint.com/_layouts/15/userphoto.aspx?${new URLSearchParams({ size: "M", accountname: email })}`
 
 export default function App() {
   const [search, setSearch] = useState("")
@@ -205,20 +212,13 @@ export default function App() {
           <span className="brand-divider" />
           <span className="brand-project">Egypt HSR</span>
         </a>
-        <div className="top-actions">
-          <div className="live-status" aria-label="Project status: Live">
-            <span>STATUS</span>
-            <strong>Live</strong>
-          </div>
-        </div>
+       
       </header>
 
       <div className="layout">
         <main>
           <section className="hero" id="overview">
-            <div className="breadcrumbs">
-              Egypt HSR <span>/</span> Project reporting
-            </div>
+           
             <div className="hero-content">
               <div>
                 <div className="hero-identity">
@@ -395,8 +395,13 @@ export default function App() {
             </div>
             <div className="contact-grid">
               {contacts.map((contact, index) => (
-                <article className="contact-card" key={contact.name}>
+                <article className="contact-card" key={contact.name} tabIndex={0}>
                   <span className={`contact-avatar avatar-${index + 1}`}>
+                    <img
+                      src={profilePhotoUrl(contact.email)}
+                      alt=""
+                      onError={(event) => { event.currentTarget.style.display = "none" }}
+                    />
                     {contact.initials}
                   </span>
                   <div>
@@ -404,12 +409,50 @@ export default function App() {
                     <p>{contact.role}</p>
                     <small>{contact.scope}</small>
                   </div>
-                  <a
-                    href={`mailto:${contact.name.toLowerCase().replace(/ /g, ".")}@siemens.com`}
-                    aria-label={`Email ${contact.name}`}
-                  >
-                    <Icon name="arrow" size={17} />
-                  </a>
+                  <div className="contact-actions">
+                    <a href={`mailto:${contact.email}`} aria-label={`Email ${contact.name}`} title={`Email ${contact.name}`}>
+                      <Icon name="arrow" size={17} />
+                    </a>
+                    <a
+                      href={`https://teams.microsoft.com/l/chat/0/0?users=${encodeURIComponent(contact.email)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Chat with ${contact.name} in Teams`}
+                      title={`Chat with ${contact.name} in Teams`}
+                    >
+                      <Icon name="people" size={17} />
+                    </a>
+                  </div>
+                  <div className="contact-profile-card">
+                    <div className="contact-profile-heading">
+                      <span className="contact-profile-photo">
+                        <img
+                          src={profilePhotoUrl(contact.email)}
+                          alt=""
+                          onError={(event) => { event.currentTarget.style.display = "none" }}
+                        />
+                        {contact.initials}
+                      </span>
+                      <div>
+                        <strong>{contact.name}</strong>
+                        <span>{contact.role}</span>
+                      </div>
+                    </div>
+                    <p>{contact.scope}</p>
+                    <a className="contact-profile-email" href={`mailto:${contact.email}`}>
+                      {contact.email}
+                    </a>
+                    <div className="contact-profile-actions">
+                      <a href={`mailto:${contact.email}`}>Email</a>
+                      <a
+                        href={`https://teams.microsoft.com/l/chat/0/0?users=${encodeURIComponent(contact.email)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Chat in Teams
+                      </a>
+                    </div>
+                  </div>
                 </article>
               ))}
             </div>
