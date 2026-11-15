@@ -1,14 +1,5 @@
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import type { ReactNode } from "react"
-import {
-  type DataProvider,
-  formatDate,
-  formatFull,
-  formatRelative,
-  freshness,
-  useLastModified,
-} from "./lastModified"
-import "./lastModified.css"
 
 type IconName = "arrow" | "book" | "chevron" | "clock" | "dashboard" | "external" | "file" | "grid" | "help" | "home" | "menu" | "people" | "powerbi" | "search"
 
@@ -116,58 +107,6 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   )
 }
 
-/* ------------------------------------------------------------------ */
-/*  "Last updated" badge                                               */
-/* ------------------------------------------------------------------ */
-
-function UpdatedBadge({
-  label,
-  date,
-  detail,
-  loading,
-}: {
-  label: string
-  date?: Date | null
-  /** extra tooltip text, e.g. the newest file name */
-  detail?: string
-  loading: boolean
-}) {
-  if (loading) {
-    return (
-      <span className="updated is-loading" aria-busy="true">
-        Checking date…
-      </span>
-    )
-  }
-  if (!date) {
-    return (
-      <span className="updated is-unknown" title="No date available for this item yet">
-        <Icon name="clock" size={13} />
-        <span>{label}</span>
-        <span className="updated-rel">not available</span>
-      </span>
-    )
-  }
-  const tip = [formatFull(date), formatRelative(date), detail].filter(Boolean).join(" · ")
-  return (
-    <span className={`updated is-${freshness(date)}`} title={tip}>
-      <Icon name="clock" size={13} />
-      <span>{label}</span>
-      <time dateTime={date.toISOString()}>{formatDate(date)}</time>
-      <span className="updated-rel">{formatRelative(date)}</span>
-    </span>
-  )
-}
-
-
-const MPR_FOLDER = "" 
-const FOLDER_SOURCES: Record<string, string> = {
-  mpr: MPR_FOLDER,
-  internal: "Shared Documents/General/02_Project Management/OPM-REP/01_Monthly Project Status Report (internal)",
-  p2: "Shared Documents/General/10_Site visits & Progress Reports/01_Green Line/01_Progress Report",
-}
-
-
 type DashboardItem = { key: string; name: string; tag: string; href: string }
 
 const groups: { title: string; accent: string; items: DashboardItem[] }[] = [
@@ -212,8 +151,6 @@ const groups: { title: string; accent: string; items: DashboardItem[] }[] = [
   },
 ]
 
-const DASHBOARD_KEYS = groups.flatMap((group) => group.items.map((item) => item.key))
-
 const contacts = [
   {
     initials: "AZ",
@@ -241,29 +178,9 @@ const contacts = [
   },
 ]
 
-const nav = [
-  { label: "Overview", icon: "home", id: "overview" },
-  { label: "Project status", icon: "dashboard", id: "project-status" },
-  { label: "FAQ & support", icon: "help", id: "faq-support" },
-] as const
-
-export interface AppProps {
-  provider?: DataProvider
-  demo?: boolean
-}
-
-export default function App({ provider, demo = false }: AppProps) {
+export default function App() {
   const [search, setSearch] = useState("")
   const [active, setActive] = useState("All")
-  const [activeSection, setActiveSection] = useState("overview")
-  const [mobileNav, setMobileNav] = useState(false)
-
-  const lm = useLastModified({
-    provider,
-    folderSources: FOLDER_SOURCES,
-    dashboardKeys: DASHBOARD_KEYS,
-    demo,
-  })
 
   const filtered = useMemo(
     () =>
@@ -278,36 +195,6 @@ export default function App({ provider, demo = false }: AppProps) {
         .filter((group) => group.items.length),
     [active, search],
   )
-
-  useEffect(() => {
-    const sections = nav
-      .map(({ id }) => document.getElementById(id))
-      .filter((section): section is HTMLElement => Boolean(section))
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible) setActiveSection(visible.target.id)
-      },
-      { rootMargin: "-18% 0px -55% 0px", threshold: [0, 0.15, 0.35] },
-    )
-
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
-  }, [])
-
-  /** Date line for a quick card; renders nothing if no folder is configured. */
-  const folderBadge = (id: string) =>
-    FOLDER_SOURCES[id] ? (
-      <UpdatedBadge
-        label="Latest file"
-        loading={lm.loading}
-        date={lm.folders[id]?.date}
-        detail={lm.folders[id]?.name}
-      />
-    ) : null
 
   return (
     <div className="projectStatusRoot">
@@ -327,47 +214,7 @@ export default function App({ provider, demo = false }: AppProps) {
       </header>
 
       <div className="layout">
-        <aside className={mobileNav ? "sidebar is-open" : "sidebar"}>
-          <div className="sidebar-title">SMO Collaboration</div>
-          <nav>
-            {nav.map(({ label, icon, id }) => (
-              <a
-                key={label}
-                className={activeSection === id ? "active" : ""}
-                href={`#${id}`}
-                aria-current={activeSection === id ? "location" : undefined}
-                onClick={() => {
-                  setActiveSection(id)
-                  setMobileNav(false)
-                }}
-              >
-                <Icon name={icon} size={19} />
-                {label}
-              </a>
-            ))}
-          </nav>
-          <div className="support-card">
-            <span className="support-icon">
-              <Icon name="help" size={19} />
-            </span>
-            <strong>Need support?</strong>
-            <p>
-              Contact the SharePoint support team for access or technical help.
-            </p>
-            <a href="#support">
-              Get support <Icon name="arrow" size={15} />
-            </a>
-          </div>
-        </aside>
-
         <main>
-          <button
-            className="mobile-menu"
-            onClick={() => setMobileNav(!mobileNav)}
-            aria-label="Toggle navigation"
-          >
-            <Icon name="menu" />
-          </button>
           <section className="hero" id="overview">
             <div className="breadcrumbs">
               Egypt HSR <span>/</span> Project reporting
@@ -410,7 +257,6 @@ export default function App({ provider, demo = false }: AppProps) {
                 <small>MONTHLY</small>
                 <strong>Monthly Progress Report</strong>
                 <p>Reporting strategy, process and matrix.</p>
-                {folderBadge("mpr")}
               </div>
               <Icon name="arrow" size={18} />
             </a>
@@ -422,7 +268,6 @@ export default function App({ provider, demo = false }: AppProps) {
                 <small>INTERNAL</small>
                 <strong>Internal Status Report</strong>
                 <p>Design, interfaces and requirements progress.</p>
-                {folderBadge("internal")}
               </div>
               <Icon name="arrow" size={18} />
             </a>
@@ -434,7 +279,6 @@ export default function App({ provider, demo = false }: AppProps) {
                 <small>WEEKLY</small>
                 <strong>P2 Site Work Progress</strong>
                 <p>Weekly progress for Package 02 site works.</p>
-                {folderBadge("p2")}
               </div>
               <Icon name="arrow" size={18} />
             </a>
@@ -489,13 +333,6 @@ export default function App({ provider, demo = false }: AppProps) {
                       <div className="report-card-title">
                         <small>POWER BI DASHBOARD</small>
                         <h3>{name}</h3>
-                      </div>
-                      <div className="report-card-meta">
-                        <UpdatedBadge
-                          label="Data refreshed"
-                          loading={lm.loading}
-                          date={lm.dashboards[key]}
-                        />
                       </div>
                       <div className="report-card-action">
                         <span>Open dashboard</span>
