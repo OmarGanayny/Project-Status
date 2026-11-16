@@ -2,8 +2,8 @@ import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import desiroImage from "./assets/First Desiro.webp";
 import vectronImage from "./assets/First Vectron.webp";
 import depotImage from "./assets/Main Depot.webp";
-import ocsImage from "./assets/OCS Pole Erection.webp";
-import trackLayingImage from "./assets/Track Laying in progress.webp";
+import ocsImage from "./assets/OCS Pole Erection.jpg";
+import trackLayingImage from "./assets/Track Laying in progress.jpg";
 import velaroImage from "./assets/Velaro-EGY-exterior-1-1536x1024.jpg";
 import LMS from "./assets/LMS Photo.png";
 import Aconex from "./assets/Oracle-text-transparent.png";
@@ -259,14 +259,12 @@ const responsibleContacts: ResponsibleContact[] = [
     name: "Farah Eissa",
     email: "farah.eissa@siemens.com",
     role: "Senior Information Management Specialist",
-    scope: "PMO · INF Dashboards",
   },
   {
     initials: "ME",
     name: "Mariam Elkhatib",
     email: "mariam.elkhatib@siemens.com",
     role: "Project Information Engineer",
-    scope: "SIT · Weekly P2 Site Report",
   },
 ];
 
@@ -340,7 +338,6 @@ function ResponsibleContactCard({ contact }: { contact: ResponsibleContact }) {
           <span className="contact-card-details">
             <strong>{contact.name}</strong>
             <small>{contact.role}</small>
-            <small>{contact.scope}</small>
           </span>
         </button>
         <div className="contact-card-actions">
@@ -389,7 +386,6 @@ function ResponsibleContactCard({ contact }: { contact: ResponsibleContact }) {
             <Icon name="close" size={17} />
           </button>
         </div>
-        <p className="contact-availability">{contact.scope}</p>
         <a className="contact-email" href={`mailto:${contact.email}`}>
           <Icon name="mail" size={16} />
           {contact.email}

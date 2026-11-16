@@ -521,8 +521,8 @@
 
 .resource-logo img {
   display: block;
-  width: 45px;
-  height: 38px;
+  width: 41px;
+  height: 31px;
   object-fit: contain;
 }
 
@@ -572,7 +572,7 @@
 
 .responsible-contacts-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 240px));
+  grid-template-columns: repeat(2, minmax(0, 200px));
   gap: 12px;
 }
 
