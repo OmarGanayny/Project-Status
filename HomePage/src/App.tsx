@@ -1,0 +1,556 @@
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import desiroImage from "./assets/First Desiro.webp";
+import vectronImage from "./assets/First Vectron.webp";
+import depotImage from "./assets/Main Depot.webp";
+import ocsImage from "./assets/OCS Pole Erection.webp";
+import trackLayingImage from "./assets/Track Laying in progress.webp";
+import velaroImage from "./assets/Velaro-EGY-exterior-1-1536x1024.jpg";
+
+type IconName =
+  | "home"
+  | "folder"
+  | "chart"
+  | "book"
+  | "layers"
+  | "search"
+  | "bell"
+  | "help"
+  | "arrow"
+  | "users"
+  | "menu"
+  | "close"
+  | "external"
+  | "train"
+  | "building"
+  | "contact"
+  | "mail";
+
+const iconPaths: Record<IconName, ReactNode> = {
+  home: (
+    <>
+      <path d="m3 11 9-8 9 8" />
+      <path d="M5.5 9.5V21h13V9.5M9.5 21v-7h5v7" />
+    </>
+  ),
+  folder: <path d="M3 6.5h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-12Z" />,
+  chart: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
+  book: (
+    <>
+      <path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22V5.5Z" />
+      <path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22V5.5Z" />
+    </>
+  ),
+  layers: (
+    <>
+      <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+      <path d="m3 12 9 5 9-5M3 16l9 5 9-5" />
+    </>
+  ),
+  search: (
+    <>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-4-4" />
+    </>
+  ),
+  bell: (
+    <>
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
+      <path d="M10 21h4" />
+    </>
+  ),
+  help: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.7 9a2.4 2.4 0 1 1 3.5 2.1c-.9.5-1.2 1-1.2 2M12 17h.01" />
+    </>
+  ),
+  arrow: (
+    <>
+      <path d="M5 12h14M14 7l5 5-5 5" />
+    </>
+  ),
+  users: (
+    <>
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8" />
+    </>
+  ),
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  close: <path d="m6 6 12 12M18 6 6 18" />,
+  external: (
+    <>
+      <path d="M14 4h6v6M20 4l-9 9" />
+      <path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6" />
+    </>
+  ),
+  train: (
+    <>
+      <rect x="5" y="3" width="14" height="16" rx="4" />
+      <path d="M8 7h8M5 13h14M8 22l2-3M16 22l-2-3" />
+      <circle cx="9" cy="16" r="1" fill="currentColor" />
+      <circle cx="15" cy="16" r="1" fill="currentColor" />
+    </>
+  ),
+  building: (
+    <>
+      <path d="M4 21V5h10v16M14 10h6v11M8 9h2M8 13h2M8 17h2M17 14h1M17 17h1M2 21h20" />
+    </>
+  ),
+  contact: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="9" cy="10" r="2.5" />
+      <path d="M5.5 17c.6-2 2-3 3.5-3s2.9 1 3.5 3M15 9h3M15 13h3" />
+    </>
+  ),
+  mail: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </>
+  ),
+};
+
+function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {iconPaths[name]}
+    </svg>
+  );
+}
+
+const navItems: { label: string; href: string; icon: IconName }[] = [
+  { label: "Home", href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732", icon: "home" },
+  {
+    label: "Documents",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Shared%20Documents/Forms/AllItems.aspx?id=%2Fteams%2FEgyptHighSpeedProject732%2FShared%20Documents%2FGeneral&viewid=3237eb3c%2Dd4fc%2D4f76%2Daaf9%2D950c71328aa1",
+    icon: "folder",
+  },
+  {
+    label: "Project Status",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Reporting.aspx",
+    icon: "chart",
+  },
+  {
+    label: "Procedures and Instructions",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Shared%20Documents/General/02_Project%20Management/Internal%20Project%20Procedures/?csf=1&web=1&e=hUUAM2",
+    icon: "book",
+  },
+  {
+    label: "SharePoint Sub-Sites",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Lists/HSR%20SharePoints%20Overview/AllItems.aspx?origin=createList&viewid=ef8afa93%2D8836%2D4f9f%2Dba42%2Dbc5d70c34f4f?env=Embedded",
+    icon: "layers",
+  },
+  {
+    label: "Procurement",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Procurement.aspx",
+    icon: "folder",
+  },
+  {
+    label: "Recycle bin",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/_layouts/15/RecycleBin.aspx",
+    icon: "folder",
+  },
+];
+
+const resources: { title: string; text: string; icon: IconName; href?: string }[] = [
+  {
+    title: "Consortium SharePoint",
+    text: "Access the shared consortium collaboration workspace.",
+    icon: "users",
+    href: "https://siemensapc.sharepoint.com/teams/HSRSOA",
+  },
+  {
+    title: "Project Data Structure (PDS)",
+    text: "Browse the approved PDS and filing structure.",
+    icon: "layers",
+    href: "https://eu1.aconex.com/ViewDoc?trackingid=214483932257085761&projectid=671089173&cversion=1&tab=0",
+  },
+  {
+    title: "File Storage Guide",
+    text: "Find the right location for every project document.",
+    icon: "folder",
+    href: "https://wiki.siemens.com/pages/viewpage.action?pageId=517061397",
+  },
+  {
+    title: "Project Information",
+    text: "Key facts, governance and programme information.",
+    icon: "book",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Onboarding.aspx",
+  },
+  {
+    title: "Organization Chart",
+    text: "Explore teams, workstreams and reporting lines.",
+    icon: "building",
+    href: "https://wiki.siemens.com/spaces/en/pages/722164763/Egypt+High+Speed+Rail+OC-HSR#",
+  },
+  {
+    title: "Workstream Contacts",
+    text: "Find the right contact across the programme.",
+    icon: "contact",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Lists/Process%20Overview/AllItems.aspx",
+  },
+  {
+    title: "Stakeholder Directory",
+    text: "Find key project stakeholders and their roles.",
+    icon: "users",
+    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Lists/EHSRStakeholder%20Directory/AllItems.aspx?origin=createList&viewid=e9699a7a-bcb1-4a59-a407-f03233aa2b87&useFiltersInViewXml=1",
+  },
+  {
+    title: "Oracle Aconex",
+    text: "Open the project document management workspace.",
+    icon: "layers",
+    href: "https://eu1.aconex.com/hub/index.html",
+  },
+  {
+    title: "Aconex User Guide",
+    text: "Review guidance for using Oracle Aconex.",
+    icon: "book",
+    href:"https://eu1.aconex.com/hub/index.html?mainTarget=%2FSearchControlledDoc%3FSEARCH_ACTION%3D15%26tab%3D0%26searchMode%3D1%26searchQuery%3Dtrackingid%253A214483932257110793%2Bcversion%253A1%26singleMatchBehaviour%3DSHOW_SEARCH_RESULTS_ANYWAY%26showDocHistory%3D&MENU_TARGET=DOC-SUPERSEARCH&SEARCH_TYPE=SEARCH_TYPE_DOCS&ID=671089173&searchQuery=trackingid%3A214483932257110793+cversion%3A1&singleMatchBehaviour=SHOW_SEARCH_RESULTS_ANYWAY&showDocHistory=&tab=0",
+  },
+  {
+    title: "LMS Web Application",
+    text: "Open the learning management system.",
+    icon: "external",
+    href:"https://auth.insite-lms.com/account/login?ReturnUrl=%2Fopenid10%3Fresponse_type%3Dcode%26client_id%3D238fe9357e9c4883b4d2cd362519879b%26state%3DbTVOYjRHY0VlZmUyS0k1Wi50enVyVU9yVHJYM3RFZC5PTDFnWHRFZ1RTN185%26redirect_uri%3Dhttps%253A%252F%252Fweb.insitelms.net%26scope%3Dopenid%2520offline_access%2520profile%2520tenant%2520customer_name%2520customer_picture%2520version%2520com%2520man%2520pac%2520wtm%2520ttg%2520tse%2520pur%2520pro%2520sub%2520con%2520inst%2520acc%2520too%2520imp%2520rep%2520prd%2520usr%2520mai%2520plan%2520hse%26code_challenge%3DauFuZ9Ah234detijmN0fdKUPUPrlPdF3EjUUwCcMrhE%26code_challenge_method%3DS256%26resource%3D238fe9357e9c4883b4d2cd362519879b%26nonce%3DbTVOYjRHY0VlZmUyS0k1Wi50enVyVU9yVHJYM3RFZC5PTDFnWHRFZ1RTN185%26colorTheme%3DSystemDefault%26showStatusBadge%3Dtrue",
+  },
+  {
+    title: "LMS User Guide",
+    text: "Review guidance for using the LMS.",
+    icon: "book",
+    href: "https://wiki.siemens.com/spaces/OPMINF/pages/541672049/Insite+LMS+IPT-LMS",
+  },
+  {
+    title: "Lessons Learnt",
+    text: "Browse lessons and knowledge captured from the project.",
+    icon: "book",
+    href: "https://siemensapc.sharepoint.com/teams/HSREgypt-LessonLearntPortal/_layouts/15/AccessDenied.aspx?Source=https%3A%2F%2Fsiemensapc.sharepoint.com%2Fteams%2FHSREgypt-LessonLearntPortal%2FSitePages%2FEventPlanHome.aspx%3Fweb%3D1%26clickparams%3DeyAiWC1BcHBOYW1lIiA6ICJNaWNyb3NvZnQgT3V0bG9vayIsICJYLUFwcFZlcnNpb24iIDogIjE2LjAuMTg5MjUuMjAyMTYiLCAiT1MiIDogIldpbmRvd3MiIH0%253d%26CID%3D170ed4a1-70dd-3000-0106-5f3293c93a6f%26cidOR%3DSPO&correlation=791c4fa2-00db-3000-0cd7-472c0c9a3102&Type=item&name=3c2c79ef-350a-4f6d-914b-8aedb0a98fa0&listItemId=7&listItemUniqueId=02185126-42ea-43ae-8b14-c90b2cfb4b61&allowautoredirecttosource=true",
+  },
+];
+
+const gallery = [
+  {
+    title: "First Velaro Train",
+    type: "Rolling stock",
+    image: velaroImage,
+  },
+  {
+    title: "Main Depot",
+    type: "Infrastructure",
+    image: depotImage,
+  },
+  {
+    title: "Track Laying In Progress",
+    type: "Construction",
+    image: trackLayingImage,
+  },
+  {
+    title: "OCS Pole Erection",
+    type: "Infrastructure",
+    image: ocsImage,
+  },
+  {
+    title: "First Vectron",
+    type: "Rolling stock",
+    image: vectronImage,
+  },
+  {
+    title: "First Desiro",
+    type: "Rolling stock",
+    image: desiroImage,
+  },
+];
+
+function App() {
+  const [toast, setToast] = useState("");
+  const [contactOpen, setContactOpen] = useState(false);
+  const [contactPosition, setContactPosition] = useState<{ top: number; left: number } | null>(null);
+  const contactCardRef = useRef<HTMLButtonElement>(null);
+  const contactFlyoutRef = useRef<HTMLDivElement>(null);
+
+  const notify = (label: string) => {
+    setToast(`${label} opened`);
+    window.setTimeout(() => setToast(""), 2200);
+  };
+
+  useLayoutEffect(() => {
+    if (!contactOpen) return;
+
+    const positionFlyout = () => {
+      const card = contactCardRef.current;
+      const flyout = contactFlyoutRef.current;
+      if (!card || !flyout) return;
+
+      const cardBounds = card.getBoundingClientRect();
+      const flyoutBounds = flyout.getBoundingClientRect();
+      const margin = 12;
+      const aboveCard = cardBounds.top - flyoutBounds.height - margin;
+      const top = aboveCard >= margin
+        ? aboveCard
+        : Math.max(margin, window.innerHeight - flyoutBounds.height - margin);
+      const left = window.innerWidth <= 520
+        ? margin
+        : Math.min(cardBounds.left, window.innerWidth - flyoutBounds.width - margin);
+
+      setContactPosition({ top, left: Math.max(margin, left) });
+    };
+
+    const frame = window.requestAnimationFrame(positionFlyout);
+    window.addEventListener("resize", positionFlyout);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", positionFlyout);
+    };
+  }, [contactOpen]);
+
+  return (
+    <div className="shell">
+      <main className="main">
+        <div className="page">
+          <div className="page-label">
+            <span className="siemens-word">SIEMENS</span>
+            <i />
+            <span>Egypt HSR</span>
+          </div>
+
+          <section className="home-hero">
+            <div className="hero-copy">
+              <div className="hero-kicker">
+                <Icon name="home" size={15} />
+                SIEMENS MOBILITY · COLLABORATION HUB
+              </div>
+              <h1>
+                Egypt HSR internal
+                <br />
+                SMO Collaboration
+              </h1>
+              <p>
+                One place to access project information, shared resources, programme contacts and
+                the latest developments from Egypt&apos;s High Speed Rail network.
+              </p>
+            </div>
+              </section>
+
+              <section className="intro-section">
+            <div>
+              <p className="section-kicker">WELCOME TO THE PROGRAMME</p>
+              <h2>
+                Egypt High Speed Rail
+                <br />
+                (HSR) Project
+              </h2>
+            </div>
+            <div className="intro-copy">
+              <p>
+                The state-of-the-art High-Speed Rail network, spanning 2,000 km, will connect the
+                country&apos;s economic and development hotspots. Three lines will link the Red Sea
+                to the Mediterranean, Greater Cairo to Abu Simbel, and Luxor to Hurghada and Safaga.
+              </p>
+              <button onClick={() => notify("Project information")}>
+                Discover the project <Icon name="arrow" size={16} />
+              </button>
+            </div>
+              </section>
+
+              <section className="gallery-section">
+            <div className="section-heading">
+              <div>
+                <p className="section-kicker">PROJECT HIGHLIGHTS</p>
+                <h2>Building the future of mobility</h2>
+              </div>
+              <span>Latest project views</span>
+            </div>
+            <div className="gallery-grid">
+              {gallery.map((item) => (
+                <article key={item.title}>
+                  <img src={item.image} alt={item.title} />
+                  <div>
+                    <small>{item.type}</small>
+                    <h3>{item.title}</h3>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="resources-section" aria-label="Quick access">
+            <div className="section-heading">
+              <div>
+                <p className="section-kicker">QUICK ACCESS</p>
+                <h2>Project resources</h2>
+              </div>
+            </div>
+              <div className="resource-grid">
+                {resources.map((resource) => {
+                  const content = (
+                    <>
+                      <span className="resource-icon">
+                        <Icon name={resource.icon} size={20} />
+                      </span>
+                      <span>
+                        <strong>{resource.title}</strong>
+                        <small>{resource.text}</small>
+                      </span>
+                      <Icon name="arrow" size={16} />
+                    </>
+                  );
+
+                  return resource.href ? (
+                    <a
+                      key={resource.title}
+                      href={resource.href}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <button
+                      key={resource.title}
+                      type="button"
+                      onClick={() => setToast(`No link is configured for ${resource.title}.`)}
+                    >
+                      {content}
+                    </button>
+                  );
+                })}
+              </div>
+          </section>
+
+          <section className="workspace-links-section">
+            <div className="section-heading">
+              <div>
+                <p className="section-kicker">WORKSPACE LINKS</p>
+                <h2>Explore the workspace</h2>
+              </div>
+            </div>
+            <div className="workspace-links-grid">
+              {navItems.map((item) => (
+                <a key={item.label} href={item.href} target="_blank" rel="noreferrer">
+                  <span className="resource-icon">
+                    <Icon name={item.icon} size={20} />
+                  </span>
+                  <strong>{item.label}</strong>
+                  <Icon name="arrow" size={16} />
+                </a>
+              ))}
+            </div>
+          </section>
+
+          <section className="contact-profile-section">
+            <div
+              className={`contact-profile ${contactOpen ? "open" : ""}`}
+              onMouseEnter={() => setContactOpen(true)}
+              onMouseLeave={() => setContactOpen(false)}
+              onFocusCapture={() => setContactOpen(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                  setContactOpen(false);
+                }
+              }}
+            >
+              <button
+                ref={contactCardRef}
+                className="contact-card"
+                type="button"
+                aria-expanded={contactOpen}
+                aria-controls="contact-flyout"
+                onClick={() => setContactOpen(true)}
+              >
+                <div className="contact-avatar">
+                  FE
+                  <img
+                    src="https://siemens.sharepoint.com/_layouts/15/userphoto.aspx?size=M&accountname=farah.eissa%40siemens.com"
+                    alt=""
+                    onError={(event) => {
+                      event.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
+                <div>
+                  <p className="section-kicker">HOME PAGE CONTACT</p>
+                  <h3>Farah Eissa</h3>
+                  <span>Senior Information Manager · SMO Team</span>
+                </div>
+                <span className="contact-card-action">
+                  View contact <Icon name="arrow" size={16} />
+                </span>
+              </button>
+              <div
+                ref={contactFlyoutRef}
+                className="contact-flyout"
+                id="contact-flyout"
+                role="region"
+                aria-label="Farah Eissa contact details"
+                style={contactPosition ?? undefined}
+              >
+                <div className="contact-flyout-heading">
+                  <div className="contact-avatar">
+                    FE
+                    <img
+                      src="https://siemens.sharepoint.com/_layouts/15/userphoto.aspx?size=M&accountname=farah.eissa%40siemens.com"
+                      alt=""
+                      onError={(event) => {
+                        event.currentTarget.style.display = "none";
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <strong>Eissa, Farah</strong>
+                    <small>Senior Information Management · SMO Team</small>
+                  </div>
+                  <button
+                    className="contact-flyout-close"
+                    type="button"
+                    aria-label="Close contact details"
+                    onClick={() => setContactOpen(false)}
+                  >
+                    <Icon name="close" size={17} />
+                  </button>
+                </div>
+                <p className="contact-availability">Available for project enquiries</p>
+                <a className="contact-email" href="mailto:farah.eissa@siemens.com">
+                  <Icon name="mail" size={16} />
+                  farah.eissa@siemens.com
+                </a>
+                <div className="contact-actions">
+                  <a href="mailto:farah.eissa@siemens.com">
+                    <Icon name="mail" size={17} /> Email
+                  </a>
+                  <a
+                    href="https://teams.microsoft.com/l/chat/0/0?users=farah.eissa%40siemens.com"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Icon name="users" size={17} /> Chat on Teams
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </main>
+
+      {toast && (
+        <div className="toast">
+          <Icon name="external" size={17} />
+          {toast}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
