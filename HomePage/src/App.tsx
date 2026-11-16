@@ -433,8 +433,7 @@ function App() {
                   </div>
                   <span className="contact-card-details">
                     <strong>Farah Eissa</strong>
-                    <small>Senior Information Manager</small>
-                    <small>PMO · INF Dashboards</small>
+                    <small>Senior Information Management Specialist</small>
                   </span>
                 </button>
                 <div className="contact-card-actions">
