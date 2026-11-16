@@ -5,7 +5,8 @@ import depotImage from "./assets/Main Depot.webp";
 import ocsImage from "./assets/OCS Pole Erection.webp";
 import trackLayingImage from "./assets/Track Laying in progress.webp";
 import velaroImage from "./assets/Velaro-EGY-exterior-1-1536x1024.jpg";
-
+import LMS from "./assets/LMS Photo.png";
+import Aconex from "./assets/Oracle-text-transparent.png";
 type IconName =
   | "home"
   | "folder"
@@ -130,7 +131,7 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   );
 }
 
-const resources: { title: string; text: string; icon: IconName; href?: string }[] = [
+const resources: { title: string; text: string; icon: IconName; image?: string; href?: string }[] = [
   {
     title: "Consortium SharePoint",
     text: "Access the shared consortium collaboration workspace.",
@@ -177,24 +178,28 @@ const resources: { title: string; text: string; icon: IconName; href?: string }[
     title: "Oracle Aconex",
     text: "Open the project document management workspace.",
     icon: "layers",
+    image: Aconex,
     href: "https://eu1.aconex.com/hub/index.html",
   },
   {
     title: "Aconex User Guide",
     text: "Review guidance for using Oracle Aconex.",
     icon: "book",
+    image: Aconex,
     href:"https://eu1.aconex.com/hub/index.html?mainTarget=%2FSearchControlledDoc%3FSEARCH_ACTION%3D15%26tab%3D0%26searchMode%3D1%26searchQuery%3Dtrackingid%253A214483932257110793%2Bcversion%253A1%26singleMatchBehaviour%3DSHOW_SEARCH_RESULTS_ANYWAY%26showDocHistory%3D&MENU_TARGET=DOC-SUPERSEARCH&SEARCH_TYPE=SEARCH_TYPE_DOCS&ID=671089173&searchQuery=trackingid%3A214483932257110793+cversion%3A1&singleMatchBehaviour=SHOW_SEARCH_RESULTS_ANYWAY&showDocHistory=&tab=0",
   },
   {
     title: "LMS Web Application",
     text: "Open the learning management system.",
     icon: "external",
+    image: LMS,
     href:"https://auth.insite-lms.com/account/login?ReturnUrl=%2Fopenid10%3Fresponse_type%3Dcode%26client_id%3D238fe9357e9c4883b4d2cd362519879b%26state%3DbTVOYjRHY0VlZmUyS0k1Wi50enVyVU9yVHJYM3RFZC5PTDFnWHRFZ1RTN185%26redirect_uri%3Dhttps%253A%252F%252Fweb.insitelms.net%26scope%3Dopenid%2520offline_access%2520profile%2520tenant%2520customer_name%2520customer_picture%2520version%2520com%2520man%2520pac%2520wtm%2520ttg%2520tse%2520pur%2520pro%2520sub%2520con%2520inst%2520acc%2520too%2520imp%2520rep%2520prd%2520usr%2520mai%2520plan%2520hse%26code_challenge%3DauFuZ9Ah234detijmN0fdKUPUPrlPdF3EjUUwCcMrhE%26code_challenge_method%3DS256%26resource%3D238fe9357e9c4883b4d2cd362519879b%26nonce%3DbTVOYjRHY0VlZmUyS0k1Wi50enVyVU9yVHJYM3RFZC5PTDFnWHRFZ1RTN185%26colorTheme%3DSystemDefault%26showStatusBadge%3Dtrue",
   },
   {
     title: "LMS User Guide",
     text: "Review guidance for using the LMS.",
     icon: "book",
+    image: LMS,
     href: "https://wiki.siemens.com/spaces/OPMINF/pages/541672049/Insite+LMS+IPT-LMS",
   },
   {
@@ -211,6 +216,16 @@ const gallery = [
     type: "Rolling stock",
     image: velaroImage,
   },
+    {
+    title: "First Desiro",
+    type: "Rolling stock",
+    image: desiroImage,
+  },
+    {
+    title: "First Vectron",
+    type: "Rolling stock",
+    image: vectronImage,
+  },
   {
     title: "Main Depot",
     type: "Infrastructure",
@@ -222,35 +237,52 @@ const gallery = [
     image: trackLayingImage,
   },
   {
-    title: "OCS Pole Erection",
+    title: "OCS Installation",
     type: "Infrastructure",
     image: ocsImage,
+  }
+
+
+];
+
+type ResponsibleContact = {
+  initials: string;
+  name: string;
+  email: string;
+  role: string;
+  scope: string;
+};
+
+const responsibleContacts: ResponsibleContact[] = [
+  {
+    initials: "FE",
+    name: "Farah Eissa",
+    email: "farah.eissa@siemens.com",
+    role: "Senior Information Management Specialist",
+    scope: "PMO · INF Dashboards",
   },
   {
-    title: "First Vectron",
-    type: "Rolling stock",
-    image: vectronImage,
-  },
-  {
-    title: "First Desiro",
-    type: "Rolling stock",
-    image: desiroImage,
+    initials: "ME",
+    name: "Mariam Elkhatib",
+    email: "mariam.elkhatib@siemens.com",
+    role: "Project Information Engineer",
+    scope: "SIT · Weekly P2 Site Report",
   },
 ];
 
-function App() {
-  const [toast, setToast] = useState("");
-  const [contactOpen, setContactOpen] = useState(false);
-  const [contactPosition, setContactPosition] = useState<{ top: number; left: number } | null>(null);
-  const contactCardRef = useRef<HTMLDivElement>(null);
-  const contactFlyoutRef = useRef<HTMLDivElement>(null);
+function ResponsibleContactCard({ contact }: { contact: ResponsibleContact }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const flyoutRef = useRef<HTMLDivElement>(null);
+  const photoUrl = `https://siemens.sharepoint.com/_layouts/15/userphoto.aspx?size=M&accountname=${encodeURIComponent(contact.email)}`;
 
   useLayoutEffect(() => {
-    if (!contactOpen) return;
+    if (!isOpen) return;
 
     const positionFlyout = () => {
-      const card = contactCardRef.current;
-      const flyout = contactFlyoutRef.current;
+      const card = cardRef.current;
+      const flyout = flyoutRef.current;
       if (!card || !flyout) return;
 
       const cardBounds = card.getBoundingClientRect();
@@ -264,7 +296,7 @@ function App() {
         ? margin
         : Math.min(cardBounds.left, window.innerWidth - flyoutBounds.width - margin);
 
-      setContactPosition({ top, left: Math.max(margin, left) });
+      setPosition({ top, left: Math.max(margin, left) });
     };
 
     const frame = window.requestAnimationFrame(positionFlyout);
@@ -273,7 +305,114 @@ function App() {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("resize", positionFlyout);
     };
-  }, [contactOpen]);
+  }, [isOpen]);
+
+  return (
+    <div
+      className={`contact-profile ${isOpen ? "open" : ""}`}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onFocusCapture={() => setIsOpen(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setIsOpen(false);
+        }
+      }}
+    >
+      <div ref={cardRef} className="contact-card">
+        <button
+          className="contact-card-trigger"
+          type="button"
+          aria-expanded={isOpen}
+          aria-controls={`contact-flyout-${contact.initials}`}
+          onClick={() => setIsOpen(true)}
+        >
+          <div className="contact-avatar">
+            {contact.initials}
+            <img
+              src={photoUrl}
+              alt=""
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+              }}
+            />
+          </div>
+          <span className="contact-card-details">
+            <strong>{contact.name}</strong>
+            <small>{contact.role}</small>
+            <small>{contact.scope}</small>
+          </span>
+        </button>
+        <div className="contact-card-actions">
+          <a href={`mailto:${contact.email}`} aria-label={`Email ${contact.name}`}>
+            <Icon name="mail" size={16} />
+          </a>
+          <a
+            href={`https://teams.microsoft.com/l/chat/0/0?users=${encodeURIComponent(contact.email)}`}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Chat with ${contact.name} on Teams`}
+          >
+            <Icon name="users" size={16} />
+          </a>
+        </div>
+      </div>
+      <div
+        ref={flyoutRef}
+        className="contact-flyout"
+        id={`contact-flyout-${contact.initials}`}
+        role="region"
+        aria-label={`${contact.name} contact details`}
+        style={position ?? undefined}
+      >
+        <div className="contact-flyout-heading">
+          <div className="contact-avatar">
+            {contact.initials}
+            <img
+              src={photoUrl}
+              alt=""
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+              }}
+            />
+          </div>
+          <div>
+            <strong>{contact.name}</strong>
+            <small>{contact.role}</small>
+          </div>
+          <button
+            className="contact-flyout-close"
+            type="button"
+            aria-label={`Close ${contact.name} contact details`}
+            onClick={() => setIsOpen(false)}
+          >
+            <Icon name="close" size={17} />
+          </button>
+        </div>
+        <p className="contact-availability">{contact.scope}</p>
+        <a className="contact-email" href={`mailto:${contact.email}`}>
+          <Icon name="mail" size={16} />
+          {contact.email}
+        </a>
+        <div className="contact-actions">
+          <a href={`mailto:${contact.email}`}>
+            <Icon name="mail" size={17} /> Email
+          </a>
+          <a
+            href={`https://teams.microsoft.com/l/chat/0/0?users=${encodeURIComponent(contact.email)}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icon name="users" size={17} /> Chat on Teams
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [toast, setToast] = useState("");
 
   return (
     <div className="shell">
@@ -360,9 +499,15 @@ function App() {
                 {resources.map((resource) => {
                   const content = (
                     <>
-                      <span className="resource-icon">
-                        <Icon name={resource.icon} size={20} />
-                      </span>
+                      {resource.image ? (
+                        <span className="resource-logo">
+                          <img src={resource.image} alt="" />
+                        </span>
+                      ) : (
+                        <span className="resource-icon">
+                          <Icon name={resource.icon} size={20} />
+                        </span>
+                      )}
                       <span>
                         <strong>{resource.title}</strong>
                         <small>{resource.text}</small>
@@ -399,107 +544,10 @@ function App() {
               <h2>Responsible contacts</h2>
               <p>Get in touch with the right owner for your dashboard or report.</p>
             </div>
-            <div
-              className={`contact-profile ${contactOpen ? "open" : ""}`}
-              onMouseEnter={() => setContactOpen(true)}
-              onMouseLeave={() => setContactOpen(false)}
-              onFocusCapture={() => setContactOpen(true)}
-              onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-                  setContactOpen(false);
-                }
-              }}
-            >
-              <div
-                ref={contactCardRef}
-                className="contact-card"
-              >
-                <button
-                  className="contact-card-trigger"
-                  type="button"
-                  aria-expanded={contactOpen}
-                  aria-controls="contact-flyout"
-                  onClick={() => setContactOpen(true)}
-                >
-                  <div className="contact-avatar">
-                    FE
-                    <img
-                      src="https://siemens.sharepoint.com/_layouts/15/userphoto.aspx?size=M&accountname=farah.eissa%40siemens.com"
-                      alt=""
-                      onError={(event) => {
-                        event.currentTarget.style.display = "none";
-                      }}
-                    />
-                  </div>
-                  <span className="contact-card-details">
-                    <strong>Farah Eissa</strong>
-                    <small>Senior Information Management Specialist</small>
-                  </span>
-                </button>
-                <div className="contact-card-actions">
-                  <a href="mailto:farah.eissa@siemens.com" aria-label="Email Farah Eissa">
-                    <Icon name="mail" size={16} />
-                  </a>
-                  <a
-                    href="https://teams.microsoft.com/l/chat/0/0?users=farah.eissa%40siemens.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Chat with Farah Eissa on Teams"
-                  >
-                    <Icon name="users" size={16} />
-                  </a>
-                </div>
-              </div>
-              <div
-                ref={contactFlyoutRef}
-                className="contact-flyout"
-                id="contact-flyout"
-                role="region"
-                aria-label="Farah Eissa contact details"
-                style={contactPosition ?? undefined}
-              >
-                <div className="contact-flyout-heading">
-                  <div className="contact-avatar">
-                    FE
-                    <img
-                      src="https://siemens.sharepoint.com/_layouts/15/userphoto.aspx?size=M&accountname=farah.eissa%40siemens.com"
-                      alt=""
-                      onError={(event) => {
-                        event.currentTarget.style.display = "none";
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <strong>Eissa, Farah</strong>
-                    <small>Senior Information Management · SMO Team</small>
-                  </div>
-                  <button
-                    className="contact-flyout-close"
-                    type="button"
-                    aria-label="Close contact details"
-                    onClick={() => setContactOpen(false)}
-                  >
-                    <Icon name="close" size={17} />
-                  </button>
-                </div>
-                <p className="contact-availability">Available for project enquiries</p>
-                <a className="contact-email" href="mailto:farah.eissa@siemens.com">
-                  <Icon name="mail" size={16} />
-                  farah.eissa@siemens.com
-                </a>
-                <div className="contact-actions">
-                  <a href="mailto:farah.eissa@siemens.com">
-                    <Icon name="mail" size={17} /> Email
-                  </a>
-                  <a
-                    href="https://teams.microsoft.com/l/chat/0/0?users=farah.eissa%40siemens.com"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Icon name="users" size={17} /> Chat on Teams
-                  </a>
-                </div>
-              </div>
+            <div className="responsible-contacts-grid">
+              {responsibleContacts.map((contact) => (
+                <ResponsibleContactCard key={contact.email} contact={contact} />
+              ))}
             </div>
           </section>
 

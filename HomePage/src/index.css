@@ -510,6 +510,22 @@
   border-radius: 4px;
 }
 
+.resource-logo {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  background: white;
+}
+
+.resource-logo img {
+  display: block;
+  width: 45px;
+  height: 38px;
+  object-fit: contain;
+}
+
 .resource-grid strong,
 .resource-grid small {
   display: block;
@@ -552,6 +568,12 @@
   margin: 6px 0 0;
   color: #697784;
   font-size: 11px;
+}
+
+.responsible-contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 240px));
+  gap: 12px;
 }
 
 .contact-profile {
@@ -869,6 +891,12 @@
   }
   .contact-card {
     padding: 14px;
+  }
+  .responsible-contacts-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-profile {
+    width: 100%;
   }
   .contact-flyout {
     position: fixed;
