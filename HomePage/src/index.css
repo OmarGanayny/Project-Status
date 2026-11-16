@@ -381,16 +381,22 @@
   line-height: 1.8;
 }
 
-.intro-copy button {
+.intro-copy button,
+.intro-copy a {
   display: flex;
   align-items: center;
   gap: 7px;
   padding: 0;
   color: var(--teal-dark);
-  font-size: 9px;
+  font-size: 16px;
   font-weight: 650;
   border: 0;
   background: transparent;
+  text-decoration: none;
+}
+
+.intro-copy a:hover {
+  color: var(--teal);
 }
 
 .gallery-section,
@@ -521,69 +527,77 @@
   line-height: 1.4;
 }
 
-.workspace-links-section {
-  padding-top: 42px;
+.responsible-contacts-section {
+  margin-top: 58px;
+  padding: 28px 0 12px;
+  border-top: 1px solid #dfe5e4;
 }
 
-.workspace-links-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+.responsible-contacts-heading {
+  margin-bottom: 22px;
 }
 
-.workspace-links-grid a {
-  min-height: 64px;
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr) 16px;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 13px;
-  color: #2a4252;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: white;
-  font-size: 10px;
-  font-weight: 600;
-  text-decoration: none;
+.responsible-contacts-heading .section-kicker {
+  margin-bottom: 8px;
 }
 
-.workspace-links-grid a:hover {
-  background: #f6fafa;
+.responsible-contacts-heading h2 {
+  margin: 0;
+  color: #183347;
+  font-size: 23px;
+  line-height: 1.2;
 }
 
-.contact-profile-section {
-  margin-top: 52px;
+.responsible-contacts-heading > p:last-child {
+  margin: 6px 0 0;
+  color: #697784;
+  font-size: 11px;
 }
 
 .contact-profile {
   position: relative;
+  width: min(100%, 240px);
 }
 
 .contact-card {
   width: 100%;
+  min-height: 124px;
   display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 24px 28px;
-  color: white;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  color: #233c4d;
+  text-align: left;
+  border: 1px solid #dfe5e7;
+  border-radius: 3px;
+  background: #f3f2f1;
+}
+
+.contact-card-trigger {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
+  color: inherit;
   text-align: left;
   border: 0;
-  background: #15384c;
-  border-radius: 5px;
+  background: transparent;
 }
 
 .contact-avatar {
   position: relative;
   overflow: hidden;
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  color: white;
-  background: #009f9f;
+  color: #006c6d;
+  background: #d9ebeb;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
 }
 
@@ -596,36 +610,43 @@
   object-fit: cover;
 }
 
-.contact-card .section-kicker {
-  margin-bottom: 5px;
-  color: #61cfcc;
-  font-size: 7px;
+.contact-card-details {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+  padding-top: 2px;
 }
 
-.contact-card h3 {
-  margin: 0;
-  font-size: 13px;
+.contact-card-details strong {
+  color: #20394a;
+  font-size: 11px;
 }
 
-.contact-card > div > span {
-  display: block;
-  margin-top: 4px;
-  color: #b9c8cf;
+.contact-card-details small {
+  color: #78868e;
   font-size: 8px;
+  line-height: 1.4;
 }
 
-.contact-card-action {
+.contact-card-actions {
   display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-left: auto;
-  padding: 10px 14px;
-  color: white;
-  font-size: 8.5px;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 4px;
-  background: transparent;
+  flex: 0 0 auto;
+  gap: 4px;
+}
+
+.contact-card-actions a {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  color: #008f8b;
+  border: 1px solid #dce8e7;
+  border-radius: 3px;
+  background: #f7fbfa;
+}
+
+.contact-card-actions a:hover {
+  background: #e6f5f4;
 }
 
 .contact-flyout {
@@ -765,9 +786,6 @@
   }
 }
 
-@media (max-width: 1020px) {
-}
-
 @media (max-width: 760px) {
   .page {
     width: min(100% - 34px, 680px);
@@ -780,9 +798,6 @@
     font-size: 36px;
   }
   .resource-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .workspace-links-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .intro-section {
@@ -852,15 +867,8 @@
   .resource-grid > :last-child {
     border-bottom: 0;
   }
-  .workspace-links-grid {
-    grid-template-columns: 1fr;
-  }
   .contact-card {
-    align-items: flex-start;
-    padding: 20px;
-  }
-  .contact-card-action {
-    display: none;
+    padding: 14px;
   }
   .contact-flyout {
     position: fixed;

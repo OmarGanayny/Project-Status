@@ -130,40 +130,6 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   );
 }
 
-const navItems: { label: string; href: string; icon: IconName }[] = [
-  { label: "Home", href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732", icon: "home" },
-  {
-    label: "Documents",
-    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Shared%20Documents/Forms/AllItems.aspx?id=%2Fteams%2FEgyptHighSpeedProject732%2FShared%20Documents%2FGeneral&viewid=3237eb3c%2Dd4fc%2D4f76%2Daaf9%2D950c71328aa1",
-    icon: "folder",
-  },
-  {
-    label: "Project Status",
-    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Reporting.aspx",
-    icon: "chart",
-  },
-  {
-    label: "Procedures and Instructions",
-    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Shared%20Documents/General/02_Project%20Management/Internal%20Project%20Procedures/?csf=1&web=1&e=hUUAM2",
-    icon: "book",
-  },
-  {
-    label: "SharePoint Sub-Sites",
-    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Lists/HSR%20SharePoints%20Overview/AllItems.aspx?origin=createList&viewid=ef8afa93%2D8836%2D4f9f%2Dba42%2Dbc5d70c34f4f?env=Embedded",
-    icon: "layers",
-  },
-  {
-    label: "Procurement",
-    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Procurement.aspx",
-    icon: "folder",
-  },
-  {
-    label: "Recycle bin",
-    href: "https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/_layouts/15/RecycleBin.aspx",
-    icon: "folder",
-  },
-];
-
 const resources: { title: string; text: string; icon: IconName; href?: string }[] = [
   {
     title: "Consortium SharePoint",
@@ -276,13 +242,8 @@ function App() {
   const [toast, setToast] = useState("");
   const [contactOpen, setContactOpen] = useState(false);
   const [contactPosition, setContactPosition] = useState<{ top: number; left: number } | null>(null);
-  const contactCardRef = useRef<HTMLButtonElement>(null);
+  const contactCardRef = useRef<HTMLDivElement>(null);
   const contactFlyoutRef = useRef<HTMLDivElement>(null);
-
-  const notify = (label: string) => {
-    setToast(`${label} opened`);
-    window.setTimeout(() => setToast(""), 2200);
-  };
 
   useLayoutEffect(() => {
     if (!contactOpen) return;
@@ -326,10 +287,10 @@ function App() {
 
           <section className="home-hero">
             <div className="hero-copy">
-              <div className="hero-kicker">
+              {/* <div className="hero-kicker">
                 <Icon name="home" size={15} />
                 SIEMENS MOBILITY · COLLABORATION HUB
-              </div>
+              </div> */}
               <h1>
                 Egypt HSR internal
                 <br />
@@ -357,9 +318,13 @@ function App() {
                 country&apos;s economic and development hotspots. Three lines will link the Red Sea
                 to the Mediterranean, Greater Cairo to Abu Simbel, and Luxor to Hurghada and Safaga.
               </p>
-              <button onClick={() => notify("Project information")}>
+              <a
+                className="discover-project-link"
+                href="https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Reporting.aspx"
+              >
                 Discover the project <Icon name="arrow" size={16} />
-              </button>
+              </a>
+                
             </div>
               </section>
 
@@ -428,27 +393,12 @@ function App() {
               </div>
           </section>
 
-          <section className="workspace-links-section">
-            <div className="section-heading">
-              <div>
-                <p className="section-kicker">WORKSPACE LINKS</p>
-                <h2>Explore the workspace</h2>
-              </div>
+          <section className="responsible-contacts-section">
+            <div className="responsible-contacts-heading">
+              <p className="section-kicker">RESPONSIBLE CONTACTS</p>
+              <h2>Responsible contacts</h2>
+              <p>Get in touch with the right owner for your dashboard or report.</p>
             </div>
-            <div className="workspace-links-grid">
-              {navItems.map((item) => (
-                <a key={item.label} href={item.href} target="_blank" rel="noreferrer">
-                  <span className="resource-icon">
-                    <Icon name={item.icon} size={20} />
-                  </span>
-                  <strong>{item.label}</strong>
-                  <Icon name="arrow" size={16} />
-                </a>
-              ))}
-            </div>
-          </section>
-
-          <section className="contact-profile-section">
             <div
               className={`contact-profile ${contactOpen ? "open" : ""}`}
               onMouseEnter={() => setContactOpen(true)}
@@ -460,33 +410,47 @@ function App() {
                 }
               }}
             >
-              <button
+              <div
                 ref={contactCardRef}
                 className="contact-card"
-                type="button"
-                aria-expanded={contactOpen}
-                aria-controls="contact-flyout"
-                onClick={() => setContactOpen(true)}
               >
-                <div className="contact-avatar">
-                  FE
-                  <img
-                    src="https://siemens.sharepoint.com/_layouts/15/userphoto.aspx?size=M&accountname=farah.eissa%40siemens.com"
-                    alt=""
-                    onError={(event) => {
-                      event.currentTarget.style.display = "none";
-                    }}
-                  />
+                <button
+                  className="contact-card-trigger"
+                  type="button"
+                  aria-expanded={contactOpen}
+                  aria-controls="contact-flyout"
+                  onClick={() => setContactOpen(true)}
+                >
+                  <div className="contact-avatar">
+                    FE
+                    <img
+                      src="https://siemens.sharepoint.com/_layouts/15/userphoto.aspx?size=M&accountname=farah.eissa%40siemens.com"
+                      alt=""
+                      onError={(event) => {
+                        event.currentTarget.style.display = "none";
+                      }}
+                    />
+                  </div>
+                  <span className="contact-card-details">
+                    <strong>Farah Eissa</strong>
+                    <small>Senior Information Manager</small>
+                    <small>PMO · INF Dashboards</small>
+                  </span>
+                </button>
+                <div className="contact-card-actions">
+                  <a href="mailto:farah.eissa@siemens.com" aria-label="Email Farah Eissa">
+                    <Icon name="mail" size={16} />
+                  </a>
+                  <a
+                    href="https://teams.microsoft.com/l/chat/0/0?users=farah.eissa%40siemens.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Chat with Farah Eissa on Teams"
+                  >
+                    <Icon name="users" size={16} />
+                  </a>
                 </div>
-                <div>
-                  <p className="section-kicker">HOME PAGE CONTACT</p>
-                  <h3>Farah Eissa</h3>
-                  <span>Senior Information Manager · SMO Team</span>
-                </div>
-                <span className="contact-card-action">
-                  View contact <Icon name="arrow" size={16} />
-                </span>
-              </button>
+              </div>
               <div
                 ref={contactFlyoutRef}
                 className="contact-flyout"
