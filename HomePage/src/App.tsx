@@ -250,7 +250,6 @@ type ResponsibleContact = {
   name: string;
   email: string;
   role: string;
-  scope: string;
 };
 
 const responsibleContacts: ResponsibleContact[] = [
