@@ -249,7 +249,7 @@ export default function App() {
               </div>
               <Icon name="external" size={18} />
             </div>
-            <a className="quick-card" href="https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Reporting.aspx#2f76e537-9d4a-458a-b6fe-040c6eb9a4ae" target="_blank" rel="noreferrer">
+            <a className="quick-card" href="https://siemens.sharepoint.com/teams/EGYHSR-MonthlyProgressReport/SitePages/Home.aspx" target="_blank" rel="noreferrer">
               <span className="quick-icon">
                 <Icon name="file" />
               </span>
