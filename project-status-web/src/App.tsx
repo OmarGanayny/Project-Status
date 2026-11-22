@@ -249,7 +249,7 @@ export default function App() {
               </div>
               <Icon name="external" size={18} />
             </div>
-            <a className="quick-card" href="https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/SitePages/Reporting.aspx#2f76e537-9d4a-458a-b6fe-040c6eb9a4ae" target="_blank" rel="noreferrer">
+            <a className="quick-card" href="https://siemens.sharepoint.com/teams/EGYHSR-MonthlyProgressReport/SitePages/Home.aspx" target="_blank" rel="noreferrer">
               <span className="quick-icon">
                 <Icon name="file" />
               </span>
@@ -271,13 +271,13 @@ export default function App() {
               </div>
               <Icon name="arrow" size={18} />
             </a>
-            <a className="quick-card" href="https://siemens.sharepoint.com/teams/EgyptHighSpeedProject732/Shared%20Documents/Forms/AllItems.aspx?csf=1&web=1&e=PoWChf&CID=6b9cc49a%2Db4de%2D40b4%2Db5a1%2De65edce04318&FolderCTID=0x012000F47A6FBB1870684E8FA41BE82DE047AD&id=%2Fteams%2FEgyptHighSpeedProject732%2FShared%20Documents%2FGeneral%2F10%5FSite%20visits%20%26%20Progress%20Reports%2F01%5FGreen%20Line%2F01%5FProgress%20Report" target="_blank" rel="noreferrer">
+            <a className="quick-card" href="https://siemens.sharepoint.com/:p:/r/teams/EgyptHighSpeedProject732/Shared%20Documents/General/02_Project%20Management/OPM-REP/21-%20Reporting%20Team%20internal%20SP/07-%20Weekly%20Site%20Progress%20Report/Site%20Progress%20Weekly%20Report%20-%2018%20November%202026.pptx?d=w7c37c707954b4ba2866059559e489115&csf=1&web=1&e=f2HKyu" target="_blank" rel="noreferrer">
               <span className="quick-icon">
                 <Icon name="book" />
               </span>
               <div>
                 <small>WEEKLY</small>
-                <strong>P2 Site Work Progress</strong>
+                <strong>Weekly Site Report</strong>
                 <p>Weekly progress for Package 02 site works.</p>
               </div>
               <Icon name="arrow" size={18} />
